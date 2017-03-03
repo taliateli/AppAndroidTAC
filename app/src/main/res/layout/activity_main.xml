@@ -11,7 +11,7 @@
     tools:context="tac.com.appandroidtac.MainActivity">
 
     <TextView
-        android:text="E-mail"
+        android:text="Usuário"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -70,5 +70,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:id="@+id/btEntrar" />
+
+    <TextView
+        android:text="Cadastre-se"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btEntrar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        android:id="@+id/txCadastrar" />
 
 </RelativeLayout>
