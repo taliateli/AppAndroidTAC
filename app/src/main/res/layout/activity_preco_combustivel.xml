@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_cadastro_usuario"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/cast_expanded_controller_bg_gradient_light">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNomePosto"
+            android:textSize="18sp"
+            android:layout_weight="0.16"
+            android:textColor="@color/colorPrimary" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(R$) Gasolina"
+            android:textColor="@color/cast_expanded_controller_background_color" />
+
+        <EditText
+            android:id="@+id/etGasolina"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned"
+            android:numeric="integer|signed|decimal" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(R$) Gasolina Aditivada"
+            android:textColor="@color/cast_expanded_controller_background_color" />
+
+        <EditText
+            android:id="@+id/etGasolinaAdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned"
+            android:numeric="integer|signed|decimal" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(R$) Etanol"
+            android:textColor="@color/cast_expanded_controller_background_color" />
+
+        <EditText
+            android:id="@+id/etEtanol"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned"
+            android:numeric="integer|signed|decimal" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="(R$) Diesel"
+            android:textColor="@color/cast_expanded_controller_background_color" />
+
+        <EditText
+            android:id="@+id/etDiesel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal|numberSigned"
+            android:numeric="integer|signed|decimal" />
+
+        <Button
+            android:id="@+id/btRegistrar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar" />
+
+    </LinearLayout>
+</RelativeLayout>
