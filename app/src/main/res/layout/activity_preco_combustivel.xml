@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/cast_expanded_controller_bg_gradient_light">
+    android:background="#fcfce3">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
-            android:numeric="integer|signed|decimal" />
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <TextView
             android:id="@+id/textView7"
@@ -55,7 +57,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
-            android:numeric="integer|signed|decimal" />
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <TextView
             android:id="@+id/textView5"
@@ -70,7 +74,9 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
-            android:numeric="integer|signed|decimal" />
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <TextView
             android:id="@+id/textView4"
@@ -85,13 +91,17 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="numberDecimal|numberSigned"
-            android:numeric="integer|signed|decimal" />
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <Button
             android:id="@+id/btRegistrar"
-            android:layout_width="match_parent"
+            android:layout_width="233dp"
             android:layout_height="wrap_content"
-            android:text="Registrar" />
+            android:text="Registrar"
+            android:layout_marginLeft="120px"
+            style="@android:style/Widget.Holo.Button" />
 
     </LinearLayout>
 </RelativeLayout>

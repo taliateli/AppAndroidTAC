@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawable/cast_expanded_controller_bg_gradient_light">
+    android:background="#fcfce3">
 
     <LinearLayout
         android:orientation="vertical"
@@ -20,46 +20,59 @@
             android:text="Nome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView2" />
+            android:id="@+id/textView2"
+            android:textColor="@color/cast_expanded_controller_background_color" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:ems="10"
-            android:id="@+id/txNome" />
+            android:id="@+id/txNome"
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <TextView
             android:text="Latitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView3" />
+            android:id="@+id/textView3"
+            android:textColor="@color/cast_expanded_controller_background_color" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal|numberSigned"
             android:ems="10"
-            android:id="@+id/txLatitude" />
+            android:id="@+id/txLatitude"
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <TextView
             android:text="Longitude"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/textView6" />
+            android:id="@+id/textView6"
+            android:textColor="@color/cast_expanded_controller_background_color" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal|numberSigned"
             android:ems="10"
-            android:id="@+id/txLongitude" />
+            android:id="@+id/txLongitude"
+            android:textColor="@color/cast_expanded_controller_background_color"
+            style="@android:style/Widget.Holo.EditText"
+            android:backgroundTint="?android:attr/colorBackground" />
 
         <Button
             android:text="Salvar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btSalvar" />
+            android:id="@+id/btSalvar"
+            style="@android:style/Widget.Holo.Button" />
 
     </LinearLayout>
 </RelativeLayout>

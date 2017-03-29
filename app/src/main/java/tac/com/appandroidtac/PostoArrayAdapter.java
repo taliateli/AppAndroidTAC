@@ -32,8 +32,6 @@ public class PostoArrayAdapter extends ArrayAdapter<Posto> {
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.activity_posto_array, parent, false);
         Posto p = postos.get(position);
-        TextView tvId = (TextView) rowView.findViewById(R.id.idPosto);
-        tvId.setText(String.valueOf(p.getID()));
         TextView tvNome = (TextView) rowView.findViewById(R.id.nomePosto);
         tvNome.setText(p.getNome());
         TextView tvLatitude = (TextView) rowView.findViewById(R.id.latitudePosto);

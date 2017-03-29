@@ -17,7 +17,7 @@ import tac.com.appandroidtac.model.Posto;
 
 public class ConexaoSQLite extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 19;
     private static final String DATABASE_NAME = "postosGyn";
     private static final String TAB_POSTO = "posto";
     private static final String ID_POSTO = "_ID";
@@ -37,8 +37,8 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_TAB_POSTO =
-                "CREATE TABLE " + TAB_POSTO + "(" + ID_POSTO + " INTEGER PRIMARY KEY, " + NOME_POSTO + " TEXT, "
-                        + LATITUDE + " DOUBLE, " + LONGITUDE + " DOUBLE, " + PRECO_GASOLINA + " NUMERIC(10,4), "
+                "CREATE TABLE " + TAB_POSTO + "(" + ID_POSTO + " INTEGER PRIMARY KEY, " + NOME_POSTO + " TEXT NOT NULL, "
+                        + LATITUDE + " REAL NULL UNIQUE, " + LONGITUDE + " REAL NOT NULL UNIQUE, " + PRECO_GASOLINA + " NUMERIC(10,4), "
                         + PRECO_GASOLINA_ADIT + " NUMERIC(10,4), " + PRECO_ETANOL + " NUMERIC(10,4), "
                         + PRECO_DIESEL + " NUMERIC(10,4), " + DT_ATUALIZACAO + " TEXT" + ")";
         db.execSQL(CREATE_TAB_POSTO);
@@ -46,23 +46,27 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 7 && newVersion == 8) {
+        if (oldVersion == 18 && newVersion == 19) {
             db.execSQL("DROP TABLE IF EXISTS " + TAB_POSTO);
         }
         onCreate(db);
     }
 
-    public void cadastrarPosto(Posto posto) {
+    public void cadastrarPosto(Posto posto) throws Exception {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NOME_POSTO, posto.getNome());
         values.put(LATITUDE, posto.getLatitude());
         values.put(LONGITUDE, posto.getLongitude());
+        values.put(PRECO_GASOLINA, 0.0);
+        values.put(PRECO_GASOLINA_ADIT, 0.0);
+        values.put(PRECO_ETANOL, 0.0);
+        values.put(PRECO_DIESEL, 0.0);
         db.insert(TAB_POSTO, null, values);
         db.close();
     }
 
-    public Posto consultaPorLatLng(double lat, double lng) {
+    public Posto consultaPorLatLng(double lat, double lng) throws Exception {
         Posto posto = new Posto();
         String selectQuery = "SELECT * FROM " + TAB_POSTO + " WHERE " + LATITUDE + "="
                 + String.valueOf(lat) + " AND " + LONGITUDE + "=" + String.valueOf(lng);
@@ -71,28 +75,41 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
         if (cursor != null && cursor.moveToFirst()) {
             posto.setID(Integer.parseInt(cursor.getString(0)));
             posto.setNome(cursor.getString(1));
-            posto.setPrecoGasolina(cursor.getInt(4));
-            posto.setPrecoGasolinaAditivada(cursor.getInt(5));
-            posto.setPrecoEtanol(cursor.getInt(6));
-            posto.setPrecoDiesel(cursor.getInt(7));
+            posto.setLatitude(cursor.getDouble(2));
+            posto.setLongitude(cursor.getDouble(3));
+            posto.setPrecoGasolina(cursor.getDouble(4));
+            posto.setPrecoGasolinaAditivada(cursor.getDouble(5));
+            posto.setPrecoEtanol(cursor.getDouble(6));
+            posto.setPrecoDiesel(cursor.getDouble(7));
         }
         return posto;
     }
 
-    public Posto consultarPorID(int id) {
+    public Posto consultarPorID(int id) throws Exception {
         Posto posto = new Posto();
         String selectQuery = "SELECT * FROM " + TAB_POSTO + " WHERE " + ID_POSTO + "=" + String.valueOf(id);
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null && cursor.moveToFirst()) {
             posto.setID(Integer.parseInt(cursor.getString(0)));
+            posto.setNome(cursor.getString(1));
+            posto.setLatitude(cursor.getDouble(2));
+            posto.setLongitude(cursor.getDouble(3));
+            posto.setPrecoGasolina(cursor.getDouble(4));
+            posto.setPrecoGasolinaAditivada(cursor.getDouble(5));
+            posto.setPrecoEtanol(cursor.getDouble(6));
+            posto.setPrecoDiesel(cursor.getDouble(7));
         }
         return posto;
     }
 
-    public void atualizarPrecoCombustivel(Posto posto) {
+    public void atualizarPrecoCombustivel(Posto posto) throws Exception {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(ID_POSTO, posto.getID());
+        values.put(NOME_POSTO, posto.getNome());
+        values.put(LATITUDE, posto.getLatitude());
+        values.put(LONGITUDE, posto.getLongitude());
         values.put(PRECO_GASOLINA, posto.getPrecoGasolina());
         values.put(PRECO_GASOLINA_ADIT, posto.getPrecoGasolinaAditivada());
         values.put(PRECO_ETANOL, posto.getPrecoEtanol());
@@ -115,6 +132,10 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
                 posto.setNome(cursor.getString(1));
                 posto.setLatitude(cursor.getDouble(2));
                 posto.setLongitude(cursor.getDouble(3));
+                posto.setPrecoGasolina(cursor.getDouble(4));
+                posto.setPrecoGasolinaAditivada(cursor.getDouble(5));
+                posto.setPrecoEtanol(cursor.getDouble(6));
+                posto.setPrecoDiesel(cursor.getDouble(7));
                 postos.add(posto);
             } while (cursor.moveToNext());
         }
