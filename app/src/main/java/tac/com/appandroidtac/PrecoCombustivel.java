@@ -1,8 +1,8 @@
 package tac.com.appandroidtac;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,10 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 import tac.com.appandroidtac.dao.ConexaoSQLite;
 import tac.com.appandroidtac.model.Posto;
@@ -41,10 +40,10 @@ public class PrecoCombustivel extends AppCompatActivity {
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
 
-        final double latPosto = bundle.getDouble("lat");
-        final double lngPosto = bundle.getDouble("lng");
+        int idPosto = 1;
 
         if (bundle != null) {
+            idPosto =  bundle.getInt("id");
             tvNomePosto.setText(bundle.getString("nome"));
             etGasolina.setText(FORMAT_CURRENCY.format(bundle.getDouble("G")));
             etGasolinaAdit.setText(FORMAT_CURRENCY.format(bundle.getDouble("GA")));
@@ -52,19 +51,24 @@ public class PrecoCombustivel extends AppCompatActivity {
             etDiesel.setText(FORMAT_CURRENCY.format(bundle.getDouble("D")));
         }
 
+        final int id = idPosto;
         btRegistrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    final double lat = latPosto;
-                    final double lng = lngPosto;
-                    Posto posto = conexao.consultaPorLatLng(lat, lng);
+                    Posto posto = conexao.consultarPorID(id);
                     if (posto != null) {
                         NumberFormat nf = NumberFormat.getNumberInstance();
                         posto.setPrecoGasolina(Double.parseDouble(etGasolina.getText().toString().replace("R$", "").replace(",", ".")));
                         posto.setPrecoGasolinaAditivada(Double.parseDouble(etGasolinaAdit.getText().toString().replace("R$", "").replace(",", ".")));
                         posto.setPrecoEtanol(Double.parseDouble(etEtanol.getText().toString().replace("R$", "").replace(",", ".")));
                         posto.setPrecoDiesel(Double.parseDouble(etDiesel.getText().toString().replace("R$", "").replace(",", ".")));
+
+                        long date = System.currentTimeMillis();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+                        String dateString = sdf.format(date);
+
+                        posto.setDtAtualizacao(dateString);
                         conexao.atualizarPrecoCombustivel(posto);
                     }
                     Toast.makeText(PrecoCombustivel.this, "Atualizado com sucesso", Toast.LENGTH_LONG).show();

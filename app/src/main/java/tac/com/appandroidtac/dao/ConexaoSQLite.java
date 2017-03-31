@@ -114,7 +114,7 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
         values.put(PRECO_GASOLINA_ADIT, posto.getPrecoGasolinaAditivada());
         values.put(PRECO_ETANOL, posto.getPrecoEtanol());
         values.put(PRECO_DIESEL, posto.getPrecoDiesel());
-        // values.put(DT_ATUALIZACAO, posto.getDtAtualizacao().toString());
+        values.put(DT_ATUALIZACAO, posto.getDtAtualizacao());
         db.update(TAB_POSTO, values, ID_POSTO + " = ?",
                 new String[]{String.valueOf(posto.getID())});
         db.close();
@@ -136,6 +136,7 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
                 posto.setPrecoGasolinaAditivada(cursor.getDouble(5));
                 posto.setPrecoEtanol(cursor.getDouble(6));
                 posto.setPrecoDiesel(cursor.getDouble(7));
+                posto.setDtAtualizacao(cursor.getString(8));
                 postos.add(posto);
             } while (cursor.moveToNext());
         }

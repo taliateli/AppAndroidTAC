@@ -4,13 +4,24 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -63,10 +74,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (!postos.isEmpty()) {
             for (Posto p : postos) {
                 StringBuilder sb = new StringBuilder();
-                sb.append("G: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolina())).append(" - ");
-                sb.append("GA: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolinaAditivada())).append(" - ");
-                sb.append("ET: ").append(FORMAT_CURRENCY.format(p.getPrecoEtanol())).append(" - ");
-                sb.append("DI: ").append(FORMAT_CURRENCY.format(p.getPrecoDiesel()));
+                sb.append("Gasolina: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolina())).append("\n");
+                sb.append("Gasolina Aditivada: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolinaAditivada())).append("\n");
+                sb.append("Etanol: ").append(FORMAT_CURRENCY.format(p.getPrecoEtanol())).append("\n");
+                sb.append("Diesel: ").append(FORMAT_CURRENCY.format(p.getPrecoDiesel()));
+                if (p.getDtAtualizacao() != null) {
+                    sb.append("\n").append("Atualizado em: ").append(p.getDtAtualizacao());
+                }
                 LatLng latLng = new LatLng(p.getLatitude(), p.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString()));
             }
@@ -74,8 +88,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String locationProvider = LocationManager.NETWORK_PROVIDER;
         Location lastlocation = locationManager.getLastKnownLocation(locationProvider);
 
-        String lat = String.valueOf(lastlocation.getLatitude());
-        String lng = String.valueOf(lastlocation.getLongitude());
+        String lat = "-16.6698504";
+        String lng = "-49.2605772";
+        if (lastlocation != null) {
+            lat = String.valueOf(lastlocation.getLatitude());
+            lng = String.valueOf(lastlocation.getLongitude());
+        }
 
         LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
         mMap.addMarker(new MarkerOptions().position(latLng).title("Sua localização")
@@ -95,8 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     Posto posto = null;
                     posto = conexao.consultaPorLatLng(latPosto, lngPosto);
                     Bundle bundle = new Bundle();
-                    bundle.putDouble("lat", latPosto);
-                    bundle.putDouble("lng", lngPosto);
+                    bundle.putInt("id", posto.getID());
                     bundle.putString("nome", posto.getNome());
                     bundle.putDouble("G", posto.getPrecoGasolina());
                     bundle.putDouble("GA", posto.getPrecoGasolinaAditivada());
@@ -111,5 +128,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             }
         });
+
+        mMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+
+            @Override
+            public View getInfoContents(Marker marker) {
+
+                Context context = getApplicationContext(); //or getActivity(), YourActivity.this, etc.
+
+                LinearLayout info = new LinearLayout(context);
+                info.setOrientation(LinearLayout.VERTICAL);
+
+                TextView title = new TextView(context);
+                title.setTextColor(Color.BLACK);
+                title.setGravity(Gravity.CENTER);
+                title.setTypeface(null, Typeface.BOLD);
+                title.setText(marker.getTitle());
+
+                TextView snippet = new TextView(context);
+                snippet.setTextColor(Color.GRAY);
+                snippet.setText(marker.getSnippet());
+
+                info.addView(title);
+                info.addView(snippet);
+
+                return info;
+            }
+        });
     }
+
 }
