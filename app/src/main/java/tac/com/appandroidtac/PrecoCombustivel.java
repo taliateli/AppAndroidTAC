@@ -43,7 +43,7 @@ public class PrecoCombustivel extends AppCompatActivity {
         int idPosto = 1;
 
         if (bundle != null) {
-            idPosto =  bundle.getInt("id");
+            idPosto = bundle.getInt("id");
             tvNomePosto.setText(bundle.getString("nome"));
             etGasolina.setText(FORMAT_CURRENCY.format(bundle.getDouble("G")));
             etGasolinaAdit.setText(FORMAT_CURRENCY.format(bundle.getDouble("GA")));

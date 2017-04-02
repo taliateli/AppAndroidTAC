@@ -143,4 +143,36 @@ public class ConexaoSQLite extends SQLiteOpenHelper {
         return postos;
     }
 
+    public double getMediaCombustivel(String combustivel) {
+        double media = 0d;
+        String selectQuery = null;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = null;
+        switch (combustivel) {
+            case "Gasolina":
+                selectQuery = "SELECT AVG(" + PRECO_GASOLINA + ") FROM " + TAB_POSTO + " WHERE " + PRECO_GASOLINA + " > 0";
+                cursor = db.rawQuery(selectQuery, null);
+                break;
+            case "Etanol":
+                selectQuery = "SELECT AVG(" + PRECO_ETANOL + ") FROM " + TAB_POSTO + " WHERE " + PRECO_ETANOL + " > 0";
+                cursor = db.rawQuery(selectQuery, null);
+                break;
+            case "Diesel":
+                selectQuery = "SELECT AVG(" + PRECO_DIESEL + ") FROM " + TAB_POSTO + " WHERE " + PRECO_DIESEL + " > 0";
+                cursor = db.rawQuery(selectQuery, null);
+                break;
+            case "Gasolina Aditivada":
+                selectQuery = "SELECT AVG(" + PRECO_GASOLINA_ADIT + ") FROM " + TAB_POSTO + " WHERE " + PRECO_GASOLINA_ADIT + " > 0";
+                cursor = db.rawQuery(selectQuery, null);
+                break;
+        }
+        int count = cursor.getCount();
+        if (count > 0 && cursor.moveToFirst()) {
+            do {
+                media = cursor.getDouble(0);
+            } while (cursor.moveToNext());
+        }
+        return media;
+    }
+
 }

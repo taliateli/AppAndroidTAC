@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">AppAndroidTAC</string>
     <string name="title_activity_maps">Map</string>
+    <string-array name="combustiveis">
+        <item>Gasolina</item>
+        <item>Etanol</item>
+        <item>Diesel</item>
+        <item>Gasolina Aditivada</item>
+    </string-array>
 </resources>

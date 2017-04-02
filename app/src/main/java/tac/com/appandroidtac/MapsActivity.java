@@ -9,8 +9,6 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -18,10 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,8 +36,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private ConexaoSQLite conexao;
+    private Bundle bundle;
 
     private List<Posto> postos;
+    private static String combustivel;
     private static final int ADD_ACTION_CODE = 1;
     private static final NumberFormat FORMAT_CURRENCY = NumberFormat.getCurrencyInstance();
 
@@ -53,6 +50,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         conexao = new ConexaoSQLite(this);
         postos = conexao.getPostos();
+
+        Intent intent = getIntent();
+        bundle = intent.getExtras();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -65,42 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
-
-        if (!postos.isEmpty()) {
-            for (Posto p : postos) {
-                StringBuilder sb = new StringBuilder();
-                sb.append("Gasolina: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolina())).append("\n");
-                sb.append("Gasolina Aditivada: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolinaAditivada())).append("\n");
-                sb.append("Etanol: ").append(FORMAT_CURRENCY.format(p.getPrecoEtanol())).append("\n");
-                sb.append("Diesel: ").append(FORMAT_CURRENCY.format(p.getPrecoDiesel()));
-                if (p.getDtAtualizacao() != null) {
-                    sb.append("\n").append("Atualizado em: ").append(p.getDtAtualizacao());
-                }
-                LatLng latLng = new LatLng(p.getLatitude(), p.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString()));
-            }
-        }
-        String locationProvider = LocationManager.NETWORK_PROVIDER;
-        Location lastlocation = locationManager.getLastKnownLocation(locationProvider);
-
-        String lat = "-16.6698504";
-        String lng = "-49.2605772";
-        if (lastlocation != null) {
-            lat = String.valueOf(lastlocation.getLatitude());
-            lng = String.valueOf(lastlocation.getLongitude());
-        }
-
-        LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
-        mMap.addMarker(new MarkerOptions().position(latLng).title("Sua localização")
-                .snippet("Encontre a economia em combustível próximo a você!")
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+        setaLocalizacaoAtual();
+        adicionaPostosNoMapa();
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -160,6 +126,74 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return info;
             }
         });
+    }
+
+    private void setaLocalizacaoAtual() {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+        String locationProvider = LocationManager.NETWORK_PROVIDER;
+        Location lastlocation = locationManager.getLastKnownLocation(locationProvider);
+
+        String lat = "-16.6698504";
+        String lng = "-49.2605772";
+        if (lastlocation != null) {
+            lat = String.valueOf(lastlocation.getLatitude());
+            lng = String.valueOf(lastlocation.getLongitude());
+        }
+
+        LatLng latLng = new LatLng(Double.parseDouble(lat), Double.parseDouble(lng));
+        mMap.addMarker(new MarkerOptions().position(latLng).title("Sua localização")
+                .snippet("Encontre a economia em combustível próximo a você!")
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW)));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(17.0f));
+    }
+
+    private void adicionaPostosNoMapa() {
+        if (bundle != null) {
+            combustivel = bundle.getString("combustivel");
+        }
+        double precoMedio = conexao.getMediaCombustivel(combustivel);
+        if (!postos.isEmpty()) {
+            for (Posto p : postos) {
+                boolean marcouPosto = false;
+                StringBuilder sb = new StringBuilder();
+                sb.append("Gasolina: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolina())).append("\n");
+                sb.append("Gasolina Aditivada: ").append(FORMAT_CURRENCY.format(p.getPrecoGasolinaAditivada())).append("\n");
+                sb.append("Etanol: ").append(FORMAT_CURRENCY.format(p.getPrecoEtanol())).append("\n");
+                sb.append("Diesel: ").append(FORMAT_CURRENCY.format(p.getPrecoDiesel()));
+                if (p.getDtAtualizacao() != null) {
+                    sb.append("\n").append("Atualizado em: ").append(p.getDtAtualizacao());
+                }
+                LatLng latLng = new LatLng(p.getLatitude(), p.getLongitude());
+                if (combustivel.equals("Gasolina") && p.getPrecoGasolina() > 0.0 && p.getPrecoGasolina() < precoMedio) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    marcouPosto = true;
+                }
+                if (combustivel.equals("Etanol") && p.getPrecoEtanol() > 0.0 && p.getPrecoEtanol() < precoMedio) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    marcouPosto = true;
+                }
+                if (combustivel.equals("Diesel") && p.getPrecoDiesel() > 0.0 && p.getPrecoDiesel() < precoMedio) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    marcouPosto = true;
+                }
+                if (combustivel.equals("Gasolina Aditivada") && p.getPrecoGasolinaAditivada() > 0.0 && p.getPrecoGasolinaAditivada() < precoMedio) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString())
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
+                    marcouPosto = true;
+                }
+                if (marcouPosto == false) {
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(p.getNome()).snippet(sb.toString()));
+                }
+            }
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package tac.com.appandroidtac;
 import android.app.Activity;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,8 +15,11 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,13 +29,14 @@ import tac.com.appandroidtac.model.Posto;
 public class MainActivity extends Activity {
 
     private ConexaoSQLite conexao;
-    private PostoArrayAdapter adapter;
     private static final int ADD_ACTION_CODE = 1;
 
     Button btEntrar;
     TextView tvCadastrarPosto;
     ImageView imgLogo;
     TextView txMarquee;
+    Spinner spinner;
+    ArrayAdapter<CharSequence> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,23 @@ public class MainActivity extends Activity {
         imgLogo = (ImageView) findViewById(R.id.imgLogo);
         imgLogo.setImageResource(R.raw.logotipo);
         txMarquee = (TextView) findViewById(R.id.txMarquee);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        adapter = ArrayAdapter.createFromResource(this, R.array.combustiveis, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                Toast.makeText(getBaseContext(), parent.getItemAtPosition(position)+" Selecionado", Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         setTranslation();
 
         conexao = new ConexaoSQLite(this);
@@ -50,6 +72,9 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 try {
                     Intent intent = new Intent(getApplication(), MapsActivity.class);
+                    Bundle param = new Bundle();
+                    param.putString("combustivel", spinner.getSelectedItem().toString());
+                    intent.putExtras(param);
                     startActivity(intent);
                 } catch (Exception e) {
                     Log.e("Exception", e.getMessage());
