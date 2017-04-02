@@ -4,104 +4,114 @@
     android:id="@+id/activity_cadastro_usuario"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fcfce3"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="#fcfce3">
+    android:paddingTop="@dimen/activity_vertical_margin">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical"
-        android:weightSum="1">
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/textView2">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvNomePosto"
-            android:textSize="18sp"
-            android:layout_weight="0.16"
-            android:textColor="@color/colorPrimary" />
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="(R$) Gasolina"
-            android:textColor="@color/cast_expanded_controller_background_color" />
+            <TextView
+                android:id="@+id/tvNomePosto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.16"
+                android:textColor="@color/common_google_signin_btn_text_light_default"
+                android:textSize="18sp"
+                android:textAlignment="center"
+                android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/etGasolina"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            android:textColor="@color/cast_expanded_controller_background_color"
-            style="@android:style/Widget.Holo.EditText"
-            android:backgroundTint="?android:attr/colorBackground" />
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(R$) Gasolina"
+                android:textColor="@color/cast_expanded_controller_background_color"
+                android:layout_marginTop="20dp" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="(R$) Gasolina Aditivada"
-            android:textColor="@color/cast_expanded_controller_background_color" />
+            <EditText
+                android:id="@+id/etGasolina"
+                style="@android:style/Widget.Holo.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/colorBackground"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <EditText
-            android:id="@+id/etGasolinaAdit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            android:textColor="@color/cast_expanded_controller_background_color"
-            style="@android:style/Widget.Holo.EditText"
-            android:backgroundTint="?android:attr/colorBackground" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(R$) Gasolina Aditivada"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="(R$) Etanol"
-            android:textColor="@color/cast_expanded_controller_background_color" />
+            <EditText
+                android:id="@+id/etGasolinaAdit"
+                style="@android:style/Widget.Holo.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/colorBackground"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <EditText
-            android:id="@+id/etEtanol"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            android:textColor="@color/cast_expanded_controller_background_color"
-            style="@android:style/Widget.Holo.EditText"
-            android:backgroundTint="?android:attr/colorBackground" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(R$) Etanol"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="(R$) Diesel"
-            android:textColor="@color/cast_expanded_controller_background_color" />
+            <EditText
+                android:id="@+id/etEtanol"
+                style="@android:style/Widget.Holo.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/colorBackground"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <EditText
-            android:id="@+id/etDiesel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="numberDecimal|numberSigned"
-            android:textColor="@color/cast_expanded_controller_background_color"
-            style="@android:style/Widget.Holo.EditText"
-            android:backgroundTint="?android:attr/colorBackground" />
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="(R$) Diesel"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-        <Button
-            android:id="@+id/btRegistrar"
-            android:layout_width="233dp"
-            android:layout_height="wrap_content"
-            android:text="Registrar"
-            android:layout_marginLeft="120px"
-            style="@android:style/Widget.Holo.Button" />
+            <EditText
+                android:id="@+id/etDiesel"
+                style="@android:style/Widget.Holo.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?android:attr/colorBackground"
+                android:ems="10"
+                android:inputType="numberDecimal|numberSigned"
+                android:textColor="@color/cast_expanded_controller_background_color" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btRegistrar"
+                style="@android:style/Widget.Holo.Button"
+                android:layout_width="233dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="100px"
+                android:text="Registrar" />
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>
